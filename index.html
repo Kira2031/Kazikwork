@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>STAKE 2011 ULTRA • 12 NEON GAMES & LIVE PVP ARENA</title>
+    <link rel="stylesheet" href="/style.css" />
+</head>
+<body class="ultra-dark">
+
+    <!-- CANVAS САЛЮТА ЧАСТИЦ И ЗОЛОТОГО КОНФЕТТИ ПОВЕРХ ВСЕХ ОКОН -->
+    <canvas id="fxParticlesCanvas"></canvas>
+
+    <!-- ================= ВЕРХНИЙ БАР (STAKE PRO HEADER) ================= -->
+    <header class="topbar">
+        <div class="topbar-left">
+            <button class="icon-btn" id="sidebarToggleBtn" title="Свернуть/Развернуть меню">
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.2" fill="none">
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="12" x2="16" y2="12"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+
+            <div class="brand-logo" data-tab="apple">
+                <div class="brand-hex">
+                    <svg viewBox="0 0 40 40" width="34" height="34">
+                        <defs>
+                            <linearGradient id="hexGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#00e701"/>
+                                <stop offset="100%" stop-color="#06b6d4"/>
+                            </linearGradient>
+                        </defs>
+                        <polygon points="20,2 36,11 36,29 20,38 4,29 4,11" fill="rgba(0,231,1,0.12)" stroke="url(#hexGrad)" stroke-width="2.6"/>
+                        <path d="M13 20 L18 25 L28 14" stroke="#00e701" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="brand-titles">
+                    <div class="brand-main">STAKE<span class="neon-accent">2011</span> <span class="ultra-badge">ULTRA</span></div>
+                    <div class="brand-sub">12 ORIGINALS • LIVE PVP CLUB</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ЦЕНТРАЛЬНЫЙ КОШЕЛЁК БАЛАНСА И БЫСТРЫЙ ВЫЗОВ НА ДУЭЛЬ -->
+        <div class="topbar-center">
+            <div class="wallet-pill">
+                <div class="wallet-currency">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#041308" stroke-width="3">
+                        <line x1="12" y1="1" x2="12" y2="23"></line>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                    </svg>
+                </div>
+                <span class="wallet-balance" id="topBalanceValue">10,000</span>
+                <button class="wallet-shield-btn" id="cashbackInfoBtn" title="Авто-кэшбэк 1,000$ при балансе < 100$">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#00e701" stroke-width="2.2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                    <span>SAFE 1K$</span>
+                </button>
+            </div>
+
+            <button class="pvp-header-cta" id="openPvpModalBtn">
+                <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path d="M14.5 17.5L3 6V3h3l11.5 11.5"/>
+                    <path d="M13 19l6-6"/>
+                    <path d="M16 16l4 4"/>
+                    <path d="M19 21l2-2"/>
+                    <path d="M9.5 17.5L21 6V3h-3L6.5 14.5"/>
+                </svg>
+                <span>PVP ВЫЗОВ ДРУГУ</span>
+                <span class="pvp-count-badge" id="headerPvpCount">0</span>
+            </button>
+        </div>
+
+        <!-- ПРАВЫЙ БЛОК: ЗВУК, ЧАТ/ДРУЗЬЯ, АДМИНКА, ПРОФИЛЬ -->
+        <div class="topbar-right">
+            <button class="icon-btn sound-toggle active" id="soundToggleBtn" title="Включить/Выключить звук казино (Web Audio Synth)">
+                <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                </svg>
+            </button>
+
+            <button class="admin-root-btn hidden" id="topAdminBtn" data-tab="admin">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+                <span>ROOT ПАНЕЛЬ</span>
+            </button>
+
+            <div class="user-chip">
+                <div class="user-avatar-box" id="topUserAvatar"></div>
+                <div class="user-chip-info">
+                    <div class="user-chip-name" id="topUserName">Гость</div>
+                    <div class="user-vip-badge" id="topUserVip">BRONZE</div>
+                </div>
+                <button class="icon-btn mini" id="logoutBtn" title="Выйти">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                        <polyline points="16 17 21 12 16 7"/>
+                        <line x1="21" y1="12" x2="9" y2="12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <button class="icon-btn" id="rightSocialToggleBtn" title="Онлайн Друзья & Чат">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- ================= ТРЁХКОЛОНОЧНЫЙ WORKSPACE (МЕНЮ 12 ИГР + СЦЕНА + LIVE ДРУЗЬЯ/ЧАТ) ================= -->
+    <div class="workspace-grid">
+
+        <!-- 1. ЛЕВЫЙ САЙДБАР С КАСТОМНЫМИ ВЕКТОРНЫМИ ИКОНКАМИ 12 ИГР -->
+        <aside class="sidebar-left" id="sidebarLeft">
+            <div class="nav-group-title">STAKE ORIGINALS (12 ИГР)</div>
+            <div class="nav-list" id="gamesNavList">
+
+                <button class="nav-btn active" data-tab="apple">
+                    <span class="nav-svg-wrap green">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2">
+                            <path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0 0 17 5c-2.22 0-4 1.44-5 2-1-.56-2.78-2-5-2a4.9 4.9 0 0 0-5 4.78C2 14 5 22 8 22c1.25 0 2.5-1.06 4-1.06Z"/>
+                            <path d="M10 2c1 .5 2 2 2 5"/>
+                        </svg>
+                    </span>
+                    <div class="nav-btn-text">
+                        <span>Apple of Fortune</span>
+                        <small>Башня 8 уровней • 45x</small>
+                    </div>
+                </button>
+
+                <button class="nav-btn" data-tab="mines">
+                    <span class="nav-svg-wrap cyan">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2">
+                            <polygon points="6 3 18 3 22 9 12 22 2 9"/>
+                        </svg>
+                    </span>
+                    <div class="nav-btn-text">
+                        <span>Stake Mines 5x5</span>
+                        <small>Кристаллы • до 100x</small>
+                    </div>
+                </button>
+
+                <button class="nav-btn" data-tab="plinko">
+                    <span class="nav-svg-wrap purple">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2">
+                            <circle cx="12" cy="4" r="2"/><circle cx="8" cy="10" r="2"/><circle cx="16" cy="10" r="2"/>
+                            <circle cx="5" cy="16" r="2"/><circle cx="12" cy="16" r="2"/><circle cx="19" cy="16" r="2"/>
+                        </svg>
+                    </span>
+                    <div class="nav-btn-text">
+                        <span>Plinko Physics</span>
+                        <small>Пирамида • до 110x</small>
+                    </div>
+                </button>
+
+                <button class="nav-btn" data-tab="crash">
+                    <span class="nav-svg-wrap red">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2">
+                            <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+                            <polyline points="16 7 22 7 22 13"/>
+                        </svg>
+                    </span>
+                    <div class="nav-btn-text">
+                        <span>Crash / Aviator</span>
+                        <small>Живой график • 60 FPS</small>
+                    </div>
+                </button>
+
+                <button class="nav-btn" data-tab="wheel">
+                    <span class="nav-svg-wrap gold">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2">
+                            <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/>
+                            <line x1="12" y1="2" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="22"/>
+                            <line x1="2" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="22" y2="12"/>
+                        </svg>
+                    </span>
+                    <div class="nav-btn-text">
+                        <span>Crazy Neon Wheel</span>
+                        <small>16 Секторов • 15x</small>
+                    </div>
+                </button>
+
+                <button class="nav-btn" data-tab="blackjack">
+                    <span class="nav-svg-wrap green">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2">
+                            <rect x="3" y="4" width="12" height="16" rx="2"/>
+                            <path d="M9 8h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9"/>
+                        </svg>
+                    </span>
+                    <div class="nav-btn-text">
+                        <span>Blackjack 21 Pro</span>
+                        <small>3D Карты против Дилера</small>
+                    </div>
+                </button>
+
+                <button class="nav-btn" data-tab="tower">
+                    <span class="nav-svg-wrap orange">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2">
+                            <path d="M4 22h16"/><path d="M6 18V7l6-4 6 4v11"/><path d="M10 12h4"/><path d="M10 16h4"/>
+                        </svg>
+                    </span>
+                    <div class="nav-btn-text">
+                        <span>Dragon Tower</span>
+                        <small>Башня Дракона • 75x</small>
+                    </div>
+                </button>
+
+                <button class="nav-btn" data-tab="dice">
+                    <span class="nav-svg-wrap cyan">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2">
+                            <rect x="3" y="3" width="18" height="18" rx="3"/>
+                            <circle cx="8.5" cy="8.5" r="1.2"/><circle cx="15.5" cy="15.5" r="1.2"/><circle cx="12" cy="12" r="1.2"/>
+                        </svg>
+                    </span>
+                    <div class="nav-btn-text">
+                        <span>Stake Dice Slider</span>
+                        <small>Ползунок шанса 5–95%</small>
+                    </div>
+                </button>
+
+                <button class="nav-btn" data-tab="limbo">
+                    <span class="nav-svg-wrap purple">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                        </svg>
+                    </span>
+                    <div class="nav-btn-text">
+                        <span>Limbo Target</span>
+                        <small>Пробив до 500x</small>
+                    </div>
+                </button>
+
+                <button class="nav-btn" data-tab="coinflip">
+                    <span class="nav-svg-wrap gold">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2">
+                            <circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M9 10h6"/>
+                        </svg>
+                    </span>
+                    <div class="nav-btn-text">
+                        <span>3D Coinflip Streak</span>
+                        <small>Серия удвоений монеты</small>
+                    </div>
+                </button>
+
+                <button class="nav-btn" data-tab="keno">
+                    <span class="nav-svg-wrap green">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2">
+                            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+                        </svg>
+                    </span>
+                    <div class="nav-btn-text">
+                        <span>Neon Keno 40</span>
+                        <small>Матрица чисел • 1000x</small>
+                    </div>
+                </button>
+
+                <button class="nav-btn" data-tab="fight">
+                    <span class="nav-svg-wrap red">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+                        </svg>
+                    </span>
+                    <div class="nav-btn-text">
+                        <span>Cyber-Octagon 2011</span>
+                        <small>11 Друзей • Бои до 15x</small>
+                    </div>
+                </button>
+
+                <button class="nav-btn" data-tab="slots">
+                    <span class="nav-svg-wrap gold">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2">
+                            <rect x="2" y="5" width="20" height="14" rx="2"/><line x1="9" y1="5" x2="9" y2="19"/><line x1="15" y1="5" x2="15" y2="19"/>
+                        </svg>
+                    </span>
+                    <div class="nav-btn-text">
+                        <span>Neon Jackpot 777</span>
+                        <small>3 Барабана • 25x</small>
+                    </div>
+                </button>
+            </div>
+
+            <div class="nav-group-title">КЛУБ И АРЕНА</div>
+            <div class="nav-list">
+                <button class="nav-btn" data-tab="pvp">
+                    <span class="nav-svg-wrap red">⚔️</span>
+                    <div class="nav-btn-text">
+                        <span>PvP Вызовы Онлайн</span>
+                        <small>Карты & Бойцы раз на раз</small>
+                    </div>
+                </button>
+                <button class="nav-btn" data-tab="leaderboard">
+                    <span class="nav-svg-wrap gold">👑</span>
+                    <div class="nav-btn-text">
+                        <span>Топ Мажоров (Live)</span>
+                        <small>Таблица богачей</small>
+                    </div>
+                </button>
+                <button class="nav-btn hidden" id="sidebarAdminBtn" data-tab="admin">
+                    <span class="nav-svg-wrap purple">🛠</span>
+                    <div class="nav-btn-text">
+                        <span>Root-Консоль Админа</span>
+                        <small>Выдача баланса 1-клик</small>
+                    </div>
+                </button>
+            </div>
+        </aside>
+
+        <!-- 2. ЦЕНТРАЛЬНАЯ СЦЕНА ИГР -->
+        <main class="center-stage" id="mainStage">
+
+            <!-- ================= 1. APPLE OF FORTUNE ================= -->
+            <section class="game-view active" id="view-apple">
+                <div class="stake-shell">
+                    <div class="stake-sidebar-ctrl">
+                        <div class="panel-tag">APPLE OF FORTUNE • 8 УРОВНЕЙ</div>
+                        <label class="field-lbl">Сумма ставки ($)</label>
+                        <div class="bet-box">
+                            <input type="number" id="appleBetInput" value="500" min="10" step="50" />
+                            <button class="q-chip" data-bet-target="appleBetInput" data-act="half">½</button>
+                            <button class="q-chip" data-bet-target="appleBetInput" data-act="double">2x</button>
+                            <button class="q-chip" data-bet-target="appleBetInput" data-act="max">MAX</button>
+                        </div>
+
+                        <div class="info-stat-box">
+                            <div><span>Этаж:</span> <strong id="appleCurrentFloorText">0 / 8</strong></div>
+                            <div><span>Множитель:</span> <strong class="neon-accent" id="appleCurrentMultText">1.00x</strong></div>
+                            <div><span>На вывод:</span> <strong class="gold-txt" id="appleCashoutAmountText">0 $</strong></div>
+                        </div>
+
+                        <button class="action-btn green" id="appleStartBtn">НАЧАТЬ ИГРУ</button>
+                        <button class="action-btn gold hidden" id="appleCashoutBtn">ЗАБРАТЬ КУШ (<span id="appleBtnCashoutVal">0$</span>)</button>
+                        <button class="action-btn ghost hidden" id="appleRandomPickBtn">Случайная ячейка</button>
+                    </div>
+
+                    <div class="stake-canvas-area">
+                        <div class="stage-top-bar">
+                            <span class="pill-gold">МАКСИМАЛЬНЫЙ КУШ 8 ЭТАЖА: 45.00x</span>
+                            <span class="stage-hint" id="appleArenaHint">Сделай ставку для старта</span>
+                        </div>
+                        <div class="apple-tower-grid" id="appleTowerGrid"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= 2. STAKE MINES 5x5 ================= -->
+            <section class="game-view" id="view-mines">
+                <div class="stake-shell">
+                    <div class="stake-sidebar-ctrl">
+                        <div class="panel-tag">STAKE MINES • 5x5 GRID</div>
+                        <label class="field-lbl">Сумма ставки ($)</label>
+                        <div class="bet-box">
+                            <input type="number" id="minesBetInput" value="500" min="10" step="50" />
+                            <button class="q-chip" data-bet-target="minesBetInput" data-act="half">½</button>
+                            <button class="q-chip" data-bet-target="minesBetInput" data-act="double">2x</button>
+                            <button class="q-chip" data-bet-target="minesBetInput" data-act="max">MAX</button>
+                        </div>
+
+                        <label class="field-lbl">Бомб на поле (1–20)</label>
+                        <div class="chip-selector" id="minesCountSelector">
+                            <button class="sel-chip" data-mines="3">3</button>
+                            <button class="sel-chip active" data-mines="5">5</button>
+                            <button class="sel-chip" data-mines="8">8</button>
+                            <button class="sel-chip" data-mines="12">12</button>
+                            <button class="sel-chip" data-mines="16">16</button>
+                        </div>
+
+                        <div class="info-stat-box">
+                            <div><span>Кристаллов:</span> <strong id="minesOpenedCount">0</strong></div>
+                            <div><span>Текущий кэф:</span> <strong class="neon-accent" id="minesCurrentMult">1.00x</strong></div>
+                            <div><span>Следующий шаг:</span> <strong class="purple-txt" id="minesNextMult">1.21x</strong></div>
+                        </div>
+
+                        <button class="action-btn green" id="minesStartBtn">ЗАМИНИРОВАТЬ ПОЛЕ</button>
+                        <button class="action-btn gold hidden" id="minesCashoutBtn">ЗАБРАТЬ <span id="minesCashoutVal">0$</span></button>
+                        <button class="action-btn ghost hidden" id="minesRandomBtn">Авто-клетка</button>
+                    </div>
+
+                    <div class="stake-canvas-area" id="minesArenaBox">
+                        <div class="mines-grid-5x5" id="minesGrid5x5"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= 3. PLINKO PHYSICS ================= -->
+            <section class="game-view" id="view-plinko">
+                <div class="stake-shell">
+                    <div class="stake-sidebar-ctrl">
+                        <div class="panel-tag">PLINKO PHYSICS • 12 РЯДОВ</div>
+                        <label class="field-lbl">Сумма ставки ($)</label>
+                        <div class="bet-box">
+                            <input type="number" id="plinkoBetInput" value="500" min="10" step="50" />
+                            <button class="q-chip" data-bet-target="plinkoBetInput" data-act="half">½</button>
+                            <button class="q-chip" data-bet-target="plinkoBetInput" data-act="double">2x</button>
+                            <button class="q-chip" data-bet-target="plinkoBetInput" data-act="max">MAX</button>
+                        </div>
+
+                        <label class="field-lbl">Уровень риска (множители)</label>
+                        <div class="chip-selector" id="plinkoRiskSelector">
+                            <button class="sel-chip" data-risk="low">LOW (8.5x)</button>
+                            <button class="sel-chip active" data-risk="medium">MED (22x)</button>
+                            <button class="sel-chip" data-risk="high">HIGH (110x)</button>
+                        </div>
+
+                        <button class="action-btn green" id="plinkoDropBtn">БРОСИТЬ ШАРИК</button>
+                        <div class="hint-note">Можно нажимать быстро несколько раз подряд — запускай целый дождь неоновых шаров!</div>
+                    </div>
+
+                    <div class="stake-canvas-area">
+                        <canvas id="plinkoCanvas" width="640" height="460"></canvas>
+                        <div class="plinko-buckets-row" id="plinkoBucketsRow"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= 4. CRASH / AVIATOR ================= -->
+            <section class="game-view" id="view-crash">
+                <div class="stake-shell">
+                    <div class="stake-sidebar-ctrl">
+                        <div class="panel-tag">CRASH ROCKET • 60 FPS</div>
+                        <label class="field-lbl">Сумма ставки ($)</label>
+                        <div class="bet-box">
+                            <input type="number" id="crashBetInput" value="500" min="10" step="50" />
+                            <button class="q-chip" data-bet-target="crashBetInput" data-act="half">½</button>
+                            <button class="q-chip" data-bet-target="crashBetInput" data-act="double">2x</button>
+                            <button class="q-chip" data-bet-target="crashBetInput" data-act="max">MAX</button>
+                        </div>
+
+                        <label class="field-lbl">Авто-вывод (множитель)</label>
+                        <div class="bet-box">
+                            <input type="number" id="crashAutoInput" value="2.00" min="1.10" step="0.10" />
+                            <button class="q-chip crash-preset" data-mult="1.5">1.5x</button>
+                            <button class="q-chip crash-preset" data-mult="2.0">2x</button>
+                            <button class="q-chip crash-preset" data-mult="5.0">5x</button>
+                        </div>
+
+                        <button class="action-btn green" id="crashStartBtn">ЗАПУСТИТЬ РАКЕТУ</button>
+                        <button class="action-btn gold hidden" id="crashCashoutBtn">ЗАБРАТЬ СЕЙЧАС (<span id="crashLiveCashoutVal">0$</span>)</button>
+                    </div>
+
+                    <div class="stake-canvas-area crash-stage-wrap">
+                        <div class="crash-hud">
+                            <div class="crash-mult-big" id="crashBigMultiplier">1.00x</div>
+                            <div class="crash-status-lbl" id="crashSubStatus">ОЖИДАНИЕ СТАРТА</div>
+                        </div>
+                        <canvas id="crashCanvas" width="680" height="420"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= 5. CRAZY NEON WHEEL ================= -->
+            <section class="game-view" id="view-wheel">
+                <div class="stake-shell">
+                    <div class="stake-sidebar-ctrl">
+                        <div class="panel-tag">CRAZY NEON WHEEL • 16 СЕКТОРОВ</div>
+                        <label class="field-lbl">Сумма ставки ($)</label>
+                        <div class="bet-box">
+                            <input type="number" id="wheelBetInput" value="500" min="10" step="50" />
+                            <button class="q-chip" data-bet-target="wheelBetInput" data-act="half">½</button>
+                            <button class="q-chip" data-bet-target="wheelBetInput" data-act="double">2x</button>
+                            <button class="q-chip" data-bet-target="wheelBetInput" data-act="max">MAX</button>
+                        </div>
+
+                        <div class="legend-pills">
+                            <div class="leg-pill" style="border-color:#ef4444"><span>15.0x</span> Мега Джекпот</div>
+                            <div class="leg-pill" style="border-color:#f59e0b"><span>5.0x</span> Золотой сектор</div>
+                            <div class="leg-pill" style="border-color:#a855f7"><span>3.0x</span> Ультра Неон</div>
+                            <div class="leg-pill" style="border-color:#3b82f6"><span>2.0x</span> Дабл куш</div>
+                            <div class="leg-pill" style="border-color:#00e701"><span>1.5x</span> Изумруд</div>
+                        </div>
+
+                        <button class="action-btn green" id="wheelSpinBtn">КРУТИТЬ КОЛЕСО</button>
+                    </div>
+
+                    <div class="stake-canvas-area">
+                        <div class="wheel-wrapper">
+                            <div class="wheel-top-pin">
+                                <svg viewBox="0 0 40 44" width="38" height="42">
+                                    <polygon points="20,42 4,6 36,6" fill="#00e701" stroke="#ffffff" stroke-width="2.5"/>
+                                </svg>
+                            </div>
+                            <div class="wheel-disc" id="wheelRotator">
+                                <svg id="wheelSvg" viewBox="0 0 400 400" width="360" height="360"></svg>
+                            </div>
+                            <div class="wheel-hub" id="wheelCenterHub">
+                                <span id="wheelHubText">SPIN</span>
+                            </div>
+                        </div>
+                        <div class="stage-banner-msg" id="wheelResultBanner">Раскрути неоновое колесо!</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= 6. BLACKJACK 21 PRO ================= -->
+            <section class="game-view" id="view-blackjack">
+                <div class="stake-shell">
+                    <div class="stake-sidebar-ctrl">
+                        <div class="panel-tag">BLACKJACK 21 PRO • 3D CARDS</div>
+                        <label class="field-lbl">Сумма ставки ($)</label>
+                        <div class="bet-box">
+                            <input type="number" id="bjBetInput" value="500" min="10" step="50" />
+                            <button class="q-chip" data-bet-target="bjBetInput" data-act="half">½</button>
+                            <button class="q-chip" data-bet-target="bjBetInput" data-act="double">2x</button>
+                            <button class="q-chip" data-bet-target="bjBetInput" data-act="max">MAX</button>
+                        </div>
+
+                        <button class="action-btn green" id="bjDealBtn">РАЗДАТЬ КАРТЫ</button>
+
+                        <div id="bjActionBtns" class="bj-controls-stack hidden">
+                            <button class="action-btn green" id="bjHitBtn">➕ ВЗЯТЬ КАРТУ (HIT)</button>
+                            <button class="action-btn gold" id="bjStandBtn">🛑 ХВАТИТ (STAND)</button>
+                            <button class="action-btn purple" id="bjDoubleBtn">🔥 УДВОИТЬ СТАВКУ (DOUBLE 2x)</button>
+                        </div>
+                    </div>
+
+                    <div class="stake-canvas-area bj-table-felt">
+                        <div class="bj-zone">
+                            <div class="bj-zone-label">ДИЛЕР КАЗИНО <span class="bj-score-pill" id="bjDealerScore">0</span></div>
+                            <div class="bj-cards-row" id="bjDealerCards"></div>
+                        </div>
+
+                        <div class="bj-center-ribbon" id="bjStatusRibbon">BLACKJACK ПЛАТИТ 2.5x • ДИЛЕР СТОИТ НА 17</div>
+
+                        <div class="bj-zone">
+                            <div class="bj-zone-label">ТВОЯ РУКА <span class="bj-score-pill neon" id="bjPlayerScore">0</span></div>
+                            <div class="bj-cards-row" id="bjPlayerCards"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= 7. DRAGON TOWER ================= -->
+            <section class="game-view" id="view-tower">
+                <div class="stake-shell">
+                    <div class="stake-sidebar-ctrl">
+                        <div class="panel-tag">DRAGON TOWER • 8 ЭТАЖЕЙ (75x)</div>
+                        <label class="field-lbl">Сумма ставки ($)</label>
+                        <div class="bet-box">
+                            <input type="number" id="towerBetInput" value="500" min="10" step="50" />
+                            <button class="q-chip" data-bet-target="towerBetInput" data-act="half">½</button>
+                            <button class="q-chip" data-bet-target="towerBetInput" data-act="double">2x</button>
+                            <button class="q-chip" data-bet-target="towerBetInput" data-act="max">MAX</button>
+                        </div>
+
+                        <div class="info-stat-box">
+                            <div><span>Этаж башни:</span> <strong id="towerLevelText">0 / 8</strong></div>
+                            <div><span>Множитель:</span> <strong class="neon-accent" id="towerMultText">1.00x</strong></div>
+                        </div>
+
+                        <button class="action-btn green" id="towerStartBtn">ВОЙТИ В БАШНЮ</button>
+                        <button class="action-btn gold hidden" id="towerCashoutBtn">ЗАБРАТЬ (<span id="towerCashoutVal">0$</span>)</button>
+                    </div>
+
+                    <div class="stake-canvas-area">
+                        <div class="stage-top-bar">
+                            <span class="pill-gold">ЗОЛОТОЕ ЯЙЦО ДРАКОНА НА ВЕРШИНЕ = 75.00x</span>
+                        </div>
+                        <div class="tower-grid-wrap" id="dragonTowerGrid"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= 8. STAKE DICE SLIDER ================= -->
+            <section class="game-view" id="view-dice">
+                <div class="stake-shell">
+                    <div class="stake-sidebar-ctrl">
+                        <div class="panel-tag">STAKE DICE • ПОЛЗУНОК ВЕРОЯТНОСТИ</div>
+                        <label class="field-lbl">Сумма ставки ($)</label>
+                        <div class="bet-box">
+                            <input type="number" id="diceBetInput" value="500" min="10" step="50" />
+                            <button class="q-chip" data-bet-target="diceBetInput" data-act="half">½</button>
+                            <button class="q-chip" data-bet-target="diceBetInput" data-act="double">2x</button>
+                            <button class="q-chip" data-bet-target="diceBetInput" data-act="max">MAX</button>
+                        </div>
+
+                        <label class="field-lbl">Режим броска</label>
+                        <div class="chip-selector">
+                            <button class="sel-chip active" id="diceCondOver">БОЛЬШЕ (OVER)</button>
+                            <button class="sel-chip" id="diceCondUnder">МЕНЬШЕ (UNDER)</button>
+                        </div>
+
+                        <button class="action-btn green" id="diceRollBtn">БРОСИТЬ КУБ (ROLL)</button>
+                    </div>
+
+                    <div class="stake-canvas-area">
+                        <div class="dice-stage-card">
+                            <div class="dice-Roll-bubble" id="diceRollBubble">50.00</div>
+                            <input type="range" id="diceRangeSlider" min="5" max="95" value="50" class="dice-slider" />
+                            <div class="dice-stats-row">
+                                <div class="d-stat"><span>Порог:</span> <strong id="diceTargetVal">50</strong></div>
+                                <div class="d-stat"><span>Шанс победы:</span> <strong class="neon-accent" id="diceChanceVal">50%</strong></div>
+                                <div class="d-stat"><span>Коэффициент:</span> <strong class="gold-txt" id="diceMultVal">1.76x</strong></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= 9. LIMBO TARGET ================= -->
+            <section class="game-view" id="view-limbo">
+                <div class="stake-shell">
+                    <div class="stake-sidebar-ctrl">
+                        <div class="panel-tag">LIMBO TARGET • МГНОВЕННЫЙ ИКС</div>
+                        <label class="field-lbl">Сумма ставки ($)</label>
+                        <div class="bet-box">
+                            <input type="number" id="limboBetInput" value="500" min="10" step="50" />
+                            <button class="q-chip" data-bet-target="limboBetInput" data-act="half">½</button>
+                            <button class="q-chip" data-bet-target="limboBetInput" data-act="double">2x</button>
+                            <button class="q-chip" data-bet-target="limboBetInput" data-act="max">MAX</button>
+                        </div>
+
+                        <label class="field-lbl">Целевой множитель (1.10x – 500x)</label>
+                        <div class="bet-box">
+                            <input type="number" id="limboTargetInput" value="2.00" min="1.10" max="500" step="0.5" />
+                            <button class="q-chip limbo-preset" data-m="2">2x</button>
+                            <button class="q-chip limbo-preset" data-m="10">10x</button>
+                            <button class="q-chip limbo-preset" data-m="50">50x</button>
+                        </div>
+
+                        <button class="action-btn green" id="limboPlayBtn">ПРОБИТЬ ИКС</button>
+                    </div>
+
+                    <div class="stake-canvas-area">
+                        <div class="limbo-big-display" id="limboBigDisplay">1.00x</div>
+                        <div class="stage-banner-msg" id="limboSubMsg">Если выпавший икс выше твоей цели — забираешь куш!</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= 10. 3D COINFLIP STREAK ================= -->
+            <section class="game-view" id="view-coinflip">
+                <div class="stake-shell">
+                    <div class="stake-sidebar-ctrl">
+                        <div class="panel-tag">3D COINFLIP • СЕРИЯ УДВОЕНИЙ</div>
+                        <label class="field-lbl">Сумма ставки ($)</label>
+                        <div class="bet-box">
+                            <input type="number" id="coinBetInput" value="500" min="10" step="50" />
+                            <button class="q-chip" data-bet-target="coinBetInput" data-act="half">½</button>
+                            <button class="q-chip" data-bet-target="coinBetInput" data-act="double">2x</button>
+                            <button class="q-chip" data-bet-target="coinBetInput" data-act="max">MAX</button>
+                        </div>
+
+                        <div class="info-stat-box">
+                            <div><span>Серия побед:</span> <strong id="coinStreakText">0</strong></div>
+                            <div><span>Множитель:</span> <strong class="neon-accent" id="coinMultText">1.00x</strong></div>
+                        </div>
+
+                        <button class="action-btn green" id="coinStartBtn">ПОСТАВИТЬ НА МОНЕТУ</button>
+                        <div id="coinPickControls" class="bj-controls-stack hidden">
+                            <button class="action-btn purple" id="coinPickHeads">🦅 ОРЁЛ (HEADS)</button>
+                            <button class="action-btn cyan" id="coinPickTails">💎 РЕШКА (TAILS)</button>
+                            <button class="action-btn gold hidden" id="coinCashoutBtn">ЗАБРАТЬ (<span id="coinCashoutVal">0$</span>)</button>
+                        </div>
+                    </div>
+
+                    <div class="stake-canvas-area">
+                        <div class="coin-3d-wrap">
+                            <div class="coin-3d" id="coin3dElement">
+                                <div class="coin-face front">🦅</div>
+                                <div class="coin-face back">💎</div>
+                            </div>
+                        </div>
+                        <div class="stage-banner-msg" id="coinStatusMsg">Угадывай сторону монеты и умножай банк на 1.90x каждый шаг!</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= 11. NEON KENO 40 ================= -->
+            <section class="game-view" id="view-keno">
+                <div class="stake-shell">
+                    <div class="stake-sidebar-ctrl">
+                        <div class="panel-tag">NEON KENO • 40 ЧИСЕЛ (ДО 1000x)</div>
+                        <label class="field-lbl">Сумма ставки ($)</label>
+                        <div class="bet-box">
+                            <input type="number" id="kenoBetInput" value="500" min="10" step="50" />
+                            <button class="q-chip" data-bet-target="kenoBetInput" data-act="half">½</button>
+                            <button class="q-chip" data-bet-target="kenoBetInput" data-act="double">2x</button>
+                            <button class="q-chip" data-bet-target="kenoBetInput" data-act="max">MAX</button>
+                        </div>
+
+                        <div class="info-stat-box">
+                            <div><span>Выбрано чисел:</span> <strong id="kenoPickedCount">0 / 10</strong></div>
+                            <div><span>Последний выигрыш:</span> <strong class="neon-accent" id="kenoLastWin">0 $</strong></div>
+                        </div>
+
+                        <button class="action-btn green" id="kenoPlayBtn">ЗАПУСТИТЬ ЛОТРОТРОН</button>
+                        <button class="action-btn ghost" id="kenoAutoPickBtn">🎲 Авто-выбор 8 чисел</button>
+                        <button class="action-btn ghost" id="kenoClearBtn">Очистить поле</button>
+                    </div>
+
+                    <div class="stake-canvas-area">
+                        <div class="keno-grid-40" id="kenoGrid40"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= 12. CYBER-OCTAGON 2011 (11 БОЙЦОВ) ================= -->
+            <section class="game-view" id="view-fight">
+                <div class="stake-shell">
+                    <div class="stake-sidebar-ctrl">
+                        <div class="panel-tag">CYBER-OCTAGON 2011 • 11 ДРУЗЕЙ</div>
+                        <label class="field-lbl">Синий угол (Боец 1)</label>
+                        <select id="fightSelect1" class="stake-select"></select>
+
+                        <label class="field-lbl">Красный угол (Боец 2)</label>
+                        <select id="fightSelect2" class="stake-select"></select>
+
+                        <label class="field-lbl">На кого ставишь?</label>
+                        <div class="chip-selector two-col">
+                            <button class="sel-chip active" id="pickF1Btn">
+                                <span id="pickF1Name">Забик</span>
+                                <strong id="pickF1Odds">12x</strong>
+                            </button>
+                            <button class="sel-chip" id="pickF2Btn">
+                                <span id="pickF2Name">Некит</span>
+                                <strong id="pickF2Odds">1.3x</strong>
+                            </button>
+                        </div>
+
+                        <label class="field-lbl">Коронная тактика на финал</label>
+                        <div class="chip-selector">
+                            <button class="sel-chip tactic-btn active" data-tactic="head">В челюсть</button>
+                            <button class="sel-chip tactic-btn" data-tactic="kick">Кик в печень</button>
+                            <button class="sel-chip tactic-btn" data-tactic="wrestle">Партер</button>
+                        </div>
+
+                        <label class="field-lbl">Сумма ставки ($)</label>
+                        <div class="bet-box">
+                            <input type="number" id="fightBetInput" value="500" min="0" step="100" />
+                            <button class="q-chip" data-bet-target="fightBetInput" data-act="half">½</button>
+                            <button class="q-chip" data-bet-target="fightBetInput" data-act="double">2x</button>
+                            <button class="q-chip" data-bet-target="fightBetInput" data-act="max">MAX</button>
+                        </div>
+
+                        <button class="action-btn green" id="fightStartBtn">НАЧАТЬ БОЙ В ОКТАГОНЕ</button>
+                    </div>
+
+                    <div class="stake-canvas-area">
+                        <div class="octagon-arena-grid">
+                            <div class="fighter-holo-card" id="fighterCard1">
+                                <div class="fighter-svg-portrait" id="f1Portrait"></div>
+                                <div class="f-name" id="f1Name">Забик</div>
+                                <div class="f-title" id="f1Title">Легенда Ультра-Инстинкта</div>
+                                <div class="f-meta" id="f1Stats">174 см • 48 кг</div>
+                                <div class="hp-track"><div class="hp-fill" id="f1HpBar" style="width:100%"></div><span id="f1HpText">100%</span></div>
+                            </div>
+
+                            <div class="vs-pillar">
+                                <div class="vs-orb">VS</div>
+                                <div class="round-pill" id="fightRoundBadge">ГОТОВЫ</div>
+                            </div>
+
+                            <div class="fighter-holo-card" id="fighterCard2">
+                                <div class="fighter-svg-portrait" id="f2Portrait"></div>
+                                <div class="f-name" id="f2Name">Некит</div>
+                                <div class="f-title" id="f2Title">Гора Чистых Мышц</div>
+                                <div class="f-meta" id="f2Stats">175 см • 65 кг</div>
+                                <div class="hp-track"><div class="hp-fill" id="f2HpBar" style="width:100%"></div><span id="f2HpText">100%</span></div>
+                            </div>
+                        </div>
+                        <div class="octagon-log-banner" id="fightCommentaryBox">
+                            Выбери двух друзей 2011 года, укажи тактику и запускай бой!
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= 13. NEON SLOTS 777 ================= -->
+            <section class="game-view" id="view-slots">
+                <div class="stake-shell">
+                    <div class="stake-sidebar-ctrl">
+                        <div class="panel-tag">NEON JACKPOT 777 • 25x</div>
+                        <label class="field-lbl">Сумма ставки ($)</label>
+                        <div class="bet-box">
+                            <input type="number" id="slotsBetInput" value="500" min="10" step="50" />
+                            <button class="q-chip" data-bet-target="slotsBetInput" data-act="half">½</button>
+                            <button class="q-chip" data-bet-target="slotsBetInput" data-act="double">2x</button>
+                            <button class="q-chip" data-bet-target="slotsBetInput" data-act="max">MAX</button>
+                        </div>
+
+                        <div class="legend-pills">
+                            <div class="leg-pill" style="border-color:#ff2a5f"><span>25x</span> Три Семёрки 777</div>
+                            <div class="leg-pill" style="border-color:#38bdf8"><span>15x</span> Три Бриллианта</div>
+                            <div class="leg-pill" style="border-color:#facc15"><span>10x</span> Три Короны</div>
+                            <div class="leg-pill" style="border-color:#00e701"><span>1.8x</span> Два Топ-символа</div>
+                        </div>
+
+                        <button class="action-btn green" id="slotsSpinBtn">КРУТИТЬ БАРАБАНЫ</button>
+                    </div>
+
+                    <div class="stake-canvas-area">
+                        <div class="slots-cabinet">
+                            <div class="slots-code-top">3-ЗНАЧНЫЙ КОД ДЖЕКПОТА: <strong id="slotsCodeDigits">777</strong></div>
+                            <div class="slots-reels-wrap">
+                                <div class="slot-reel" id="slotReel0"></div>
+                                <div class="slot-reel" id="slotReel1"></div>
+                                <div class="slot-reel" id="slotReel2"></div>
+                            </div>
+                            <div class="stage-banner-msg" id="slotsResultText">Поймай 777 и забери 25x!</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= PVP АРЕНА ВЫЗОВОВ ОНЛАЙН (КАРТЫ & БОЙЦЫ) ================= -->
+            <section class="game-view" id="view-pvp">
+                <div class="page-card">
+                    <div class="page-card-head">
+                        <div>
+                            <h2>⚔️ LIVE PVP АРЕНА — ВЫЗОВЫ ДРУЗЬЯМ ОНЛАЙН</h2>
+                            <p>Кидай вызов другу, который сейчас Online, в Карточную Дуэль (21) или Бой Персонажей 2011 на любой куш!</p>
+                        </div>
+                        <button class="action-btn green small" id="createPvpBtnTop">+ Создать Вызов</button>
+                    </div>
+
+                    <div class="pvp-Arena-grid" id="pvpChallengesList"></div>
+                </div>
+            </section>
+
+            <!-- ================= ЛИДЕРБОРД (ТОП МАЖОРОВ) ================= -->
+            <section class="game-view" id="view-leaderboard">
+                <div class="page-card">
+                    <div class="page-card-head">
+                        <div>
+                            <h2>👑 ТАБЛИЦА ТОП МАЖОРОВ КЛУБА (LIVE)</h2>
+                            <p>Отображает VIP-ранг, статус Online, баланс и общую сумму выигрышей каждого друга</p>
+                        </div>
+                        <button class="action-btn ghost small" id="refreshLeaderboardBtn">Обновить</button>
+                    </div>
+                    <div class="table-scroll">
+                        <table class="stake-pro-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>ИГРОК & VIP</th>
+                                    <th>СТАТУС</th>
+                                    <th>БАЛАНС</th>
+                                    <th>ВСЕГО ВЫИГРАНО</th>
+                                    <th>РЕКОРД</th>
+                                    <th>ДЕЙСТВИЕ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leaderboardTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= ROOT-КОНСОЛЬ АДМИНА (ДАВРОН) ================= -->
+            <section class="game-view" id="view-admin">
+                <div class="page-card">
+                    <div class="page-card-head">
+                        <div>
+                            <h2>🛠 ROOT-КОНСОЛЬ ГЛАВНОГО АДМИНА (ДАВРОН)</h2>
+                            <p>Мгновенная выдача любого баланса себе или другу в 1 клик + настройка силы бойцов</p>
+                        </div>
+                        <div class="row-btns">
+                            <button class="adm-chip green" id="adminBonusAllBtn">Всем +5,000$</button>
+                            <button class="adm-chip purple" id="adminResetAllBtn">Всем = 10,000$</button>
+                        </div>
+                    </div>
+
+                    <div class="admin-two-cols">
+                        <div class="adm-box">
+                            <h3>💰 Выдача баланса игрокам (или произвольная сумма)</h3>
+                            <div class="admin-users-list" id="adminUsersList"></div>
+                        </div>
+                        <div class="adm-box">
+                            <h3>🥊 Настройка силы 11 бойцов (2011)</h3>
+                            <div class="admin-fighters-list" id="adminFightersList"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- НИЖНЯЯ LIVE-ЛЕНТА ВСЕХ ЗАНОСОВ КЛУБА -->
+            <div class="live-feed-card">
+                <div class="live-feed-head">
+                    <span class="pulse-green"></span>
+                    <span>LIVE ЗАНОСЫ КЛУБА В РЕАЛЬНОМ ВРЕМЕНИ</span>
+                </div>
+                <div class="table-scroll">
+                    <table class="stake-pro-table compact">
+                        <thead>
+                            <tr>
+                                <th>ИГРА</th>
+                                <th>ИГРОК</th>
+                                <th>СТАВКА</th>
+                                <th>КОЭФФИЦИЕНТ</th>
+                                <th>ВЫПЛАТА</th>
+                            </tr>
+                        </thead>
+                        <tbody id="liveBetsFeedBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- 3. ПРАВАЯ ПАНЕЛЬ: ДРУЗЬЯ ОНЛАЙН (ВЫЗОВ В 1 КЛИК + ПЕРЕВОД $) & ЖИВОЙ ЧАТ -->
+        <aside class="sidebar-right" id="sidebarRight">
+            <div class="social-block">
+                <div class="social-title">
+                    <span>🟢 ДРУЗЬЯ ОНЛАЙН</span>
+                    <span class="online-counter" id="onlineFriendsCount">0</span>
+                </div>
+                <div class="online-friends-list" id="onlineFriendsList"></div>
+            </div>
+
+            <div class="social-block chat-block">
+                <div class="social-title">
+                    <span>💬 ЖИВОЙ ЧАТ КЛУБА</span>
+                </div>
+                <div class="chat-messages-box" id="chatMessagesBox"></div>
+                <form id="chatSendForm" class="chat-input-row">
+                    <input type="text" id="chatTextInput" placeholder="Написать пацанам в чат..." maxlength="200" />
+                    <button type="submit" class="chat-send-btn">➤</button>
+                </form>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- ================= МОДАЛЬНОЕ ОКНО СОЗДАНИЯ / ПРИНЯТИЯ PVP-ВЫЗОВА ================= -->
+    <div class="modal-backdrop hidden" id="pvpModalBackdrop">
+        <div class="modal-card">
+            <div class="modal-head">
+                <h3>⚔️ БРОСИТЬ ВЫЗОВ НА PVP-ДУЭЛЬ</h3>
+                <button class="close-x" id="closePvpModalBtn">✕</button>
+            </div>
+
+            <label class="field-lbl">Кому кидаем вызов?</label>
+            <select id="pvpTargetSelect" class="stake-select"></select>
+
+            <label class="field-lbl">Режим дуэли</label>
+            <div class="chip-selector two-col">
+                <button class="sel-chip active" id="pvpModeCardsBtn" data-mode="cards">🃏 Карточная Дуэль (21)</button>
+                <button class="sel-chip" id="pvpModeFightersBtn" data-mode="fighters">🥊 Бой Персонажей 2011</button>
+            </div>
+
+            <div id="pvpFighterOptions" class="hidden">
+                <label class="field-lbl">Выбери своего бойца</label>
+                <select id="pvpChallengerFighter" class="stake-select"></select>
+                <label class="field-lbl">Секретный удар</label>
+                <div class="chip-selector">
+                    <button class="sel-chip pvp-tact active" data-t="head">В челюсть</button>
+                    <button class="sel-chip pvp-tact" data-t="kick">Кик в печень</button>
+                    <button class="sel-chip pvp-tact" data-t="wrestle">Партер</button>
+                </div>
+            </div>
+
+            <label class="field-lbl">Ставка с каждого игрока ($)</label>
+            <div class="bet-box">
+                <input type="number" id="pvpBetAmount" value="500" min="50" step="100" />
+                <button class="q-chip" data-bet-target="pvpBetAmount" data-act="half">½</button>
+                <button class="q-chip" data-bet-target="pvpBetAmount" data-act="double">2x</button>
+            </div>
+
+            <button class="action-btn green full" id="submitCreatePvpBtn">🔥 ОТПРАВИТЬ ВЫЗОВ НА АРЕНУ</button>
+        </div>
+    </div>
+
+    <!-- ВСПЛЫВАЮЩЕЕ ОКНО ВХОДЯЩЕГО ВЫЗОВА ОТ ДРУГА (LIVE ALERT!) -->
+    <div class="incoming-pvp-banner hidden" id="incomingPvpBanner">
+        <div class="inc-pvp-glow"></div>
+        <div class="inc-pvp-content">
+            <div class="inc-pvp-title" id="incPvpTitle">🚨 ТЕБЕ ПРИЛЕТЕЛ ВЫЗОВ НА ДУЭЛЬ!</div>
+            <div class="inc-pvp-desc" id="incPvpDesc">Друг вызывает тебя на банк 1,000$</div>
+            <div class="inc-pvp-btns">
+                <button class="action-btn green small" id="incPvpAcceptBtn">⚔️ ПРИНЯТЬ БОЙ</button>
+                <button class="action-btn ghost small" id="incPvpDeclineBtn">Скрыть</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= МОДАЛЬНОЕ ОКНО АВТОРИЗАЦИИ ================= -->
+    <div class="modal-backdrop hidden" id="authModalBackdrop">
+        <div class="modal-card">
+            <div class="auth-logo-center">
+                <div class="brand-main">STAKE<span class="neon-accent">2011</span> <span class="ultra-badge">ULTRA</span></div>
+                <p>Закрытый VIP-клуб друзей • Бонус 10,000$ при входе</p>
+            </div>
+
+            <div class="auth-switch">
+                <button class="auth-tab active" id="tabLoginBtn">Вход</button>
+                <button class="auth-tab" id="tabRegisterBtn">Регистрация</button>
+            </div>
+
+            <form id="authForm" class="auth-form-stack">
+                <label class="field-lbl">Твой Логин (Ник)</label>
+                <input type="text" id="authUsername" class="stake-input-field" placeholder="Например: davron или zabik" required />
+
+                <div id="registerExtraFields" class="hidden auth-form-stack">
+                    <label class="field-lbl">Имя в Лидерборде</label>
+                    <input type="text" id="authDisplayName" class="stake-input-field" placeholder="Твоё имя для чата и топа" />
+                    <label class="field-lbl">Выбери Векторный Аватар</label>
+                    <div class="avatar-grid-picker" id="avatarPickerGrid"></div>
+                </div>
+
+                <label class="field-lbl">Пароль</label>
+                <input type="password" id="authPassword" class="stake-input-field" placeholder="Пароль (у Даврона по умолчанию: 2011)" required />
+
+                <div class="auth-err hidden" id="authErrorMsg"></div>
+                <button type="submit" class="action-btn green full" id="authSubmitBtn">ВОЙТИ И ЗАПОМНИТЬ УСТРОЙСТВО</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="toast-stack" id="toastContainer"></div>
+    <script src="/script.js"></script>
+</body>
+</html>
